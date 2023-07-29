@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
 import { CitiesService } from './cities.service';
 
 @Controller('cities')
@@ -12,16 +12,28 @@ export class CitiesController {
 
   @Get('/byName/:name')
   getCitiesByName(@Param('name') name: string) {
-    return this.citiesService.getCitiesByName(name);
+    try {
+      return this.citiesService.getCitiesByName(name);
+    } catch (err) {
+      throw new NotFoundException(err.message);
+    }
   }
 
   @Get('/byUuid/:uuid')
   getCitiesByUUID(@Param('uuid') uuid: string) {
-    return this.citiesService.getCitiesByUUID(uuid);
+    try {
+      return this.citiesService.getCitiesByUUID(uuid);
+    } catch (err) {
+      throw new NotFoundException(err.message);
+    }
   }
 
   @Get('/byCount/:count')
   getCitiesByCount(@Param('count') count: string) {
-    return this.citiesService.getCitiesByCount(count);
+    try {
+      return this.citiesService.getCitiesByCount(count);
+    } catch (err) {
+      throw new NotFoundException(err.message);
+    }
   }
 }

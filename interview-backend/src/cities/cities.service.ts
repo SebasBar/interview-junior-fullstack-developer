@@ -12,11 +12,10 @@ export class CitiesService {
 
   getCitiesByName(name: string) {
     const filteredCities = this.cities.filter((city) => {
-      return city.cityName.includes(name);
+      return city.cityName.toLowerCase().includes(name.toLowerCase());
     });
     if (!filteredCities || filteredCities.length === 0) {
-      const cityOrCities = filteredCities.length > 1 ? 'Cities' : 'City';
-      throw new Error(`${cityOrCities} not found`);
+      throw new Error('City name not found');
     }
     return filteredCities;
   }
@@ -26,8 +25,7 @@ export class CitiesService {
       return city.uuid.includes(uuid);
     });
     if (!filteredCities || filteredCities.length === 0) {
-      const cityOrCities = filteredCities.length > 1 ? 'Cities' : 'City';
-      throw new Error(`${cityOrCities} not found`);
+      throw new Error('City UUID not found');
     }
     return filteredCities;
   }
@@ -37,8 +35,7 @@ export class CitiesService {
       return String(city.count).includes(count);
     });
     if (!filteredCities || filteredCities.length === 0) {
-      const cityOrCities = filteredCities.length > 1 ? 'Cities' : 'City';
-      throw new Error(`${cityOrCities} not found`);
+      throw new Error('City count not found');
     }
 
     return filteredCities;
