@@ -1,0 +1,20 @@
+<table class='table-container'>
+    <thead class='table-header'>
+        <th>
+            City Name:
+        </th>
+        <th>
+            UUID:
+        </th>
+        <th>
+            Count:
+        </th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let city of cities">
+            <td class='table-text'>{{city.cityName}}</td>
+            <td class='table-text'>{{city.uuid}}</td>
+            <td class='table-text'>{{city.count}}</td>
+        </tr>
+    </tbody>
+</table>

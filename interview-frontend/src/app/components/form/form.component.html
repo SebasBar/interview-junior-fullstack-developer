@@ -1,0 +1,48 @@
+<form class='form-container'
+    [formGroup]="citiesForm"
+    (ngSubmit)="onSubmit()">
+    <div class='title'>Search for German Cities by:</div>
+
+    <div class="search-container">
+        <input class='search-input'
+            type="text"
+            placeholder='Type to search for a city'
+            formControlName='searchValueControl'
+            (change)="onTextInputChange($event)">
+        <button type="submit">Search</button>
+    </div>
+
+    <div class="radial-button-container">
+        <div class="radial-label">
+            <input type="radio"
+                id='city-name'
+                formControlName='searchValueTypeControl'
+                value="byName"
+                (change)="onChangeSearchParameter($event)">
+            <label for='city-name'>City Name</label>
+        </div>
+
+        <div class="radial-label">
+            <input type="radio"
+                id='uuid'
+                formControlName='searchValueTypeControl'
+                value='byUuid'
+                (change)="onChangeSearchParameter($event)">
+            <label for='uuid'
+                for="uuid">UUID</label>
+        </div>
+
+        <div class="radial-label">
+            <input type="radio"
+                id='count'
+                formControlName='searchValueTypeControl'
+                value='byCount'
+                (change)="onChangeSearchParameter($event)">
+            <label for='count'>Count</label>
+        </div>
+
+    </div>
+
+    <app-table [cities]="cities"></app-table>
+
+</form>
