@@ -7,11 +7,3 @@ export const emptyCity: City[] = [
     count: 0,
   },
 ];
-
-export const cityErrorResponse: City[] = [
-  {
-    cityName: 'Not Found',
-    uuid: 'Not Found',
-    count: 0,
-  },
-];

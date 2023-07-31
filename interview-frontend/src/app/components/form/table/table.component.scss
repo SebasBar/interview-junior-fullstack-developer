@@ -8,5 +8,15 @@
   justify-content: space-between;
 }
 
-.table-text {
+.table-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.table-row {
+  display: flex;
+  justify-content: space-between;
+  border-color: grey;
+  border-style: solid;
+  border-bottom: none;
 }

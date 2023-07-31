@@ -7,10 +7,9 @@ import { FormComponent } from './components/form/form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { TableComponent } from './components/form/table/table.component';
-import { HomeComponent } from './pages/home/home.component';
 
 @NgModule({
-  declarations: [AppComponent, FormComponent, TableComponent, HomeComponent],
+  declarations: [AppComponent, FormComponent, TableComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

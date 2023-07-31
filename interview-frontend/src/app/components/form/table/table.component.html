@@ -10,8 +10,9 @@
             Count:
         </th>
     </thead>
-    <tbody>
-        <tr *ngFor="let city of cities">
+    <tbody class='table-body'>
+        <tr class='table-row'
+            *ngFor="let city of cities">
             <td class='table-text'>{{city.cityName}}</td>
             <td class='table-text'>{{city.uuid}}</td>
             <td class='table-text'>{{city.count}}</td>

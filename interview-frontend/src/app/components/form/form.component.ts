@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ApiCallService } from './../../services/api-call.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -14,6 +15,10 @@ export class FormComponent implements OnInit {
 
   searchValue = '';
   searchValueType = '';
+  searchPlaceholder = 'Please select a type for the search';
+  isResponse = false;
+  warningMessage = '';
+  errorMessage = '';
 
   citiesForm = new FormGroup({
     searchValueControl: new FormControl('', Validators.required),
@@ -22,48 +27,64 @@ export class FormComponent implements OnInit {
 
   cities: City[] = emptyCity;
 
-  ngOnInit() {
-    this.apiCallService.getCities().subscribe(
-      (cities) => {
-        this.cities = cities;
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
-  }
+  ngOnInit() {}
 
   onSubmit() {
     // TODO: Use EventEmitter with form value
-    console.warn(this.citiesForm.value);
-
+    console.log(this.citiesForm.value);
     const searchValue = this.citiesForm.get('searchValueControl')?.value;
     const searchValueType = this.citiesForm.get(
       'searchValueTypeControl'
     )?.value;
     const url = `${searchValueType}/${searchValue}`;
 
-    this.apiCallService.getCitiesBy(url).subscribe(
-      (cities) => {
-        console.log(cities);
-        this.cities = cities;
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
+    if (searchValue === '' || searchValueType === '') {
+      this.apiCallService.getCities().subscribe(
+        (cities) => {
+          this.warningMessage =
+            'We are displaying all the results, you need to enter a text and select a search type';
+          this.responseHandle(cities);
+        },
+        (errMsg) => {
+          this.errorHandle(errMsg);
+        }
+      );
+    } else {
+      this.apiCallService.getCitiesBy(url).subscribe(
+        (cities) => {
+          console.log(cities);
+          this.responseHandle(cities);
+        },
+        (errMsg) => {
+          this.errorHandle(errMsg);
+        }
+      );
+    }
   }
 
-  onChangeSearchParameter(event: Event) {
+  onChangeSearchType(event: Event) {
     this.citiesForm.patchValue({
       searchValueTypeControl: (event.target as HTMLInputElement).value,
     });
-    console.log('event', this.citiesForm.get('searchValueTypeControl')?.value);
+    this.searchValueType = (event.target as HTMLInputElement).value;
+    this.searchPlaceholder = `Type to search for a german city ${this.searchValueType}`;
   }
 
   onTextInputChange(event: Event) {
     this.citiesForm.patchValue({
       searchValueControl: (event.target as HTMLInputElement).value,
     });
+  }
+
+  errorHandle(errorMessage: string) {
+    this.errorMessage = errorMessage;
+    this.isResponse = false;
+    throw errorMessage;
+  }
+
+  responseHandle(cities: City[]) {
+    this.cities = cities;
+    this.isResponse = true;
+    this.errorMessage = '';
   }
 }

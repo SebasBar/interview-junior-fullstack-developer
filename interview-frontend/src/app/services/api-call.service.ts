@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, of, tap } from 'rxjs';
+import { Observable, catchError, of, tap, throwError } from 'rxjs';
 import { City } from '../types/types';
-import { cityErrorResponse } from '../types/constants';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +26,6 @@ export class ApiCallService {
   }
 
   private handleError(error: ErrorEvent) {
-    console.error(`Error massage: ${error.message}`);
-    return of(cityErrorResponse);
+    return throwError(() => error.error.message);
   }
 }

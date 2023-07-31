@@ -1,7 +1,7 @@
 .form-container {
   display: flex;
   flex-direction: column;
-  width: 400px;
+  width: 560px;
   gap: 10px;
 }
 
@@ -12,9 +12,20 @@
   justify-content: center;
 }
 
+.search-container {
+  border-style: solid;
+  border-color: grey;
+  padding: 20px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .radial-button-container {
   display: flex;
   justify-content: space-around;
+  height: 30px;
 }
 
 .radial-label {
@@ -22,7 +33,7 @@
   flex-direction: column;
 }
 
-.search-container {
+.search-input-container {
   display: flex;
   justify-content: center;
   height: 30px;
@@ -30,4 +41,9 @@
 
 .search-input {
   width: 300px;
+}
+.warning-text {
+  color: orange;
+  font-weight: bold;
+  text-align: center;
 }
