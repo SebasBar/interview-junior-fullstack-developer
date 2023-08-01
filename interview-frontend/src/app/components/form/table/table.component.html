@@ -12,10 +12,14 @@
     </thead>
     <tbody class='table-body'>
         <tr class='table-row'
-            *ngFor="let city of cities">
+            *ngFor="let city of cities | paginate: {itemsPerPage: count, currentPage: page} ">
             <td class='table-text'>{{city.cityName}}</td>
             <td class='table-text'>{{city.uuid}}</td>
             <td class='table-text'>{{city.count}}</td>
         </tr>
     </tbody>
+    <div class="paginator"
+        *ngIf="cities.length > 5">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
 </table>

@@ -46,19 +46,21 @@
             </div>
         </div>
     </div>
+    <div *ngIf="isLoading"
+        class="title loading">Loading ....</div>
 
-    <div *ngIf="warningMessage && !errorMessage"
-        class='warning-text'>
-        {{warningMessage}}
+    <div *ngIf="!isLoading">
+        <div *ngIf="warningMessage && !errorMessage"
+            class='warning-text'>
+            {{warningMessage}}
+        </div>
+
+        <app-table *ngIf="isResponse"
+            [cities]="citiesResponse"></app-table>
+
+        <div *ngIf="errorMessage"
+            class="title error-message">
+            {{errorMessage}}
+        </div>
     </div>
-
-    <app-table *ngIf="
-        isResponse"
-        [cities]="citiesResponse"></app-table>
-
-    <div *ngIf="errorMessage"
-        class="title error-message">
-        {{errorMessage}}
-    </div>
-
 </form>

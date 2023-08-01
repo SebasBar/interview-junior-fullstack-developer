@@ -18,6 +18,7 @@ export class FormComponent implements OnInit {
   isResponse = false;
   warningMessage: string;
   errorMessage: string;
+  isLoading = false;
 
   ngOnInit() {
     this.citiesForm = new FormGroup({
@@ -27,6 +28,7 @@ export class FormComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isLoading = true;
     const searchValue = this.citiesForm.get('searchValueControl')?.value;
     const searchValueType = this.citiesForm.get(
       'searchValueTypeControl'
@@ -34,27 +36,26 @@ export class FormComponent implements OnInit {
     const url = `${searchValueType}/${searchValue}`;
 
     if (!searchValue) {
-      this.apiCallService.getCities().subscribe(
-        (cities) => {
+      this.apiCallService.getCities().subscribe({
+        next: (cities) => {
           this.warningMessage =
             'We are displaying all city results, you need to enter text to search';
           this.responseHandle(cities);
         },
-        (errMsg) => {
+        error: (errMsg) => {
           this.errorHandle(errMsg);
-        }
-      );
+        },
+      });
     } else {
-      this.apiCallService.getCitiesBy(url).subscribe(
-        (cities) => {
-          console.log(cities);
+      this.apiCallService.getCitiesBy(url).subscribe({
+        next: (cities) => {
           this.responseHandle(cities);
           this.warningMessage = null;
         },
-        (errMsg) => {
+        error: (errMsg) => {
           this.errorHandle(errMsg);
-        }
-      );
+        },
+      });
     }
   }
 
@@ -73,14 +74,19 @@ export class FormComponent implements OnInit {
   }
 
   responseHandle(cities: City[]) {
+    this.isLoading = false;
     this.citiesResponse = cities;
     this.isResponse = true;
     this.errorMessage = null;
   }
 
   errorHandle(errorMessage: string) {
-    this.errorMessage = errorMessage;
+    this.isLoading = false;
     this.isResponse = false;
-    throw errorMessage;
+    this.errorMessage =
+      errorMessage === undefined
+        ? 'Cannot communicate with the server'
+        : errorMessage; //To handle server down
+    throw this.errorMessage;
   }
 }

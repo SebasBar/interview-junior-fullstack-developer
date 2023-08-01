@@ -7,6 +7,7 @@ import { FormComponent } from './components/form/form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { TableComponent } from './components/form/table/table.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [AppComponent, FormComponent, TableComponent],
@@ -15,6 +16,7 @@ import { TableComponent } from './components/form/table/table.component';
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    NgxPaginationModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
