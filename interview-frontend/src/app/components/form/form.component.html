@@ -47,16 +47,17 @@
         </div>
     </div>
 
-    <div *ngIf="warningMessage.length > 0"
+    <div *ngIf="warningMessage && !errorMessage"
         class='warning-text'>
         {{warningMessage}}
     </div>
 
-    <app-table *ngIf="isResponse"
-        [cities]="cities"></app-table>
+    <app-table *ngIf="
+        isResponse"
+        [cities]="citiesResponse"></app-table>
 
-    <div *ngIf="errorMessage.length > 0"
-        class="title">
+    <div *ngIf="errorMessage"
+        class="title error-message">
         {{errorMessage}}
     </div>
 

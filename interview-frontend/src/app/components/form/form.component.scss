@@ -42,8 +42,18 @@
 .search-input {
   width: 300px;
 }
+
+.search-input.ng-invalid.ng-touched {
+  border-style: solid;
+  border-color: red;
+}
+
 .warning-text {
   color: orange;
   font-weight: bold;
   text-align: center;
+}
+
+.error-message {
+  color: red;
 }

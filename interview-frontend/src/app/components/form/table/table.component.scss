@@ -6,11 +6,16 @@
 .table-header {
   display: flex;
   justify-content: space-between;
+  border-style: solid;
+  border-width: 3px;
 }
 
 .table-body {
   display: flex;
   flex-direction: column;
+  border-style: solid;
+  border-top: none;
+  border-color: grey;
 }
 
 .table-row {
