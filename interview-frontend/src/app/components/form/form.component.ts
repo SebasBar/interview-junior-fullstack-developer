@@ -14,7 +14,7 @@ export class FormComponent implements OnInit {
 
   citiesForm: FormGroup;
   citiesResponse: City[] = emptyCity;
-  searchPlaceholder = 'Please enter a German city name';
+  searchPlaceholder = 'Type to search for a German city by "Name"';
   isResponse = false;
   warningMessage: string;
   errorMessage: string;
@@ -64,7 +64,9 @@ export class FormComponent implements OnInit {
       searchValueTypeControl: (event.target as HTMLInputElement).value,
     });
     const searchValueType = (event.target as HTMLInputElement).value;
-    this.searchPlaceholder = `Type to search for a German city ${searchValueType}`;
+    this.searchPlaceholder = `Type to search for a German city ${this.searchTypeToText(
+      searchValueType
+    )}`;
   }
 
   onTextInputChange(event: Event) {
@@ -88,5 +90,18 @@ export class FormComponent implements OnInit {
         ? 'Cannot communicate with the server'
         : errorMessage; //To handle server down
     throw this.errorMessage;
+  }
+
+  searchTypeToText(type: string): string {
+    switch (type) {
+      case 'byName':
+        return 'by "Name"';
+      case 'byUuid':
+        return 'by "Uuid"';
+      case 'byCount':
+        return 'by "Count"';
+      default:
+        return '';
+    }
   }
 }
