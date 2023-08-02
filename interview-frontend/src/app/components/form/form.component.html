@@ -50,7 +50,7 @@
         class="title loading">Loading ....</div>
 
     <div *ngIf="!isLoading">
-        <div *ngIf="warningMessage && !errorMessage"
+        <div *ngIf="warningMessage !== '' && errorMessage === ''"
             class='warning-text'>
             {{warningMessage}}
         </div>
@@ -58,7 +58,7 @@
         <app-table *ngIf="isResponse"
             [cities]="citiesResponse"></app-table>
 
-        <div *ngIf="errorMessage"
+        <div *ngIf="errorMessage !== ''"
             class="title error-message">
             {{errorMessage}}
         </div>

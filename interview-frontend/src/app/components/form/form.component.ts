@@ -1,31 +1,31 @@
 import { ApiCallService } from './../../services/api-call.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { emptyCity } from 'src/app/types/constants';
 import { City } from 'src/app/types/types';
-
+import { searchTypeToText } from './utilities/utilities';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
 })
-export class FormComponent implements OnInit {
+export class FormComponent implements OnInit, OnDestroy {
   constructor(private apiCallService: ApiCallService) {}
 
-  citiesForm: FormGroup;
+  citiesForm = new FormGroup({
+    searchValueControl: new FormControl('', Validators.required),
+    searchValueTypeControl: new FormControl('byName'),
+  });
   citiesResponse: City[] = emptyCity;
   searchPlaceholder = 'Type to search for a German city by "Name"';
   isResponse = false;
-  warningMessage: string;
-  errorMessage: string;
+  warningMessage = '';
+  errorMessage = '';
   isLoading = false;
+  subscriptions: Subscription[] = [];
 
-  ngOnInit() {
-    this.citiesForm = new FormGroup({
-      searchValueControl: new FormControl(undefined, Validators.required),
-      searchValueTypeControl: new FormControl('byName'),
-    });
-  }
+  ngOnInit() {}
 
   onSubmit() {
     this.isLoading = true;
@@ -36,26 +36,30 @@ export class FormComponent implements OnInit {
     const url = `${searchValueType}/${searchValue}`;
 
     if (!searchValue) {
-      this.apiCallService.getCities().subscribe({
-        next: (cities) => {
-          this.warningMessage =
-            'We are displaying all city results, you need to enter text to search';
-          this.responseHandle(cities);
-        },
-        error: (errMsg) => {
-          this.errorHandle(errMsg);
-        },
-      });
+      this.subscriptions.push(
+        this.apiCallService.getCities().subscribe({
+          next: (cities) => {
+            this.warningMessage =
+              'WARNING: We are displaying all city results, you need to enter text to search';
+            this.responseHandle(cities);
+          },
+          error: (errMsg) => {
+            this.errorHandle(errMsg);
+          },
+        })
+      );
     } else {
-      this.apiCallService.getCitiesBy(url).subscribe({
-        next: (cities) => {
-          this.responseHandle(cities);
-          this.warningMessage = null;
-        },
-        error: (errMsg) => {
-          this.errorHandle(errMsg);
-        },
-      });
+      this.subscriptions.push(
+        this.apiCallService.getCitiesBy(url).subscribe({
+          next: (cities) => {
+            this.responseHandle(cities);
+            this.warningMessage = '';
+          },
+          error: (errMsg) => {
+            this.errorHandle(errMsg);
+          },
+        })
+      );
     }
   }
 
@@ -64,7 +68,7 @@ export class FormComponent implements OnInit {
       searchValueTypeControl: (event.target as HTMLInputElement).value,
     });
     const searchValueType = (event.target as HTMLInputElement).value;
-    this.searchPlaceholder = `Type to search for a German city ${this.searchTypeToText(
+    this.searchPlaceholder = `Type to search for a German city ${searchTypeToText(
       searchValueType
     )}`;
   }
@@ -79,7 +83,7 @@ export class FormComponent implements OnInit {
     this.isLoading = false;
     this.citiesResponse = cities;
     this.isResponse = true;
-    this.errorMessage = null;
+    this.errorMessage = '';
   }
 
   errorHandle(errorMessage: string) {
@@ -92,16 +96,7 @@ export class FormComponent implements OnInit {
     throw this.errorMessage;
   }
 
-  searchTypeToText(type: string): string {
-    switch (type) {
-      case 'byName':
-        return 'by "Name"';
-      case 'byUuid':
-        return 'by "Uuid"';
-      case 'byCount':
-        return 'by "Count"';
-      default:
-        return '';
-    }
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }
