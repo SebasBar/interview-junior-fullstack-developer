@@ -1,5 +1,5 @@
 import { ApiCallService } from './../../services/api-call.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { emptyCity } from 'src/app/types/constants';
 import { City } from 'src/app/types/types';
@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
 })
-export class FormComponent implements OnInit, OnDestroy {
+export class FormComponent implements OnDestroy {
   constructor(private apiCallService: ApiCallService) {}
 
   citiesForm = new FormGroup({
@@ -24,8 +24,6 @@ export class FormComponent implements OnInit, OnDestroy {
   errorMessage = '';
   isLoading = false;
   subscriptions: Subscription[] = [];
-
-  ngOnInit() {}
 
   onSubmit() {
     this.isLoading = true;

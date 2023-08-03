@@ -1,21 +1,25 @@
+import { ApiCallService } from './../../services/api-call.service';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { FormComponent } from './form.component';
-
+import { HttpClient } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MockApiCallService } from '../../mocks/cities-mock';
 describe('FormComponent', () => {
-  let component: FormComponent;
+  let formComponent: FormComponent;
   let fixture: ComponentFixture<FormComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [FormComponent]
+      declarations: [FormComponent],
+      providers: [{ provide: ApiCallService, useClass: MockApiCallService }],
+      imports: [ReactiveFormsModule],
     });
+
     fixture = TestBed.createComponent(FormComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    formComponent = fixture.componentInstance;
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(formComponent).toBeTruthy();
   });
 });

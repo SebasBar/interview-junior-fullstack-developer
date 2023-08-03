@@ -9,7 +9,7 @@ import { City } from '../types/types';
 export class ApiCallService {
   constructor(private http: HttpClient) {}
 
-  private hostUrl = 'http://localhost:3000/cities/';
+  public hostUrl = 'http://localhost:3000/cities/';
 
   getCities(): Observable<City[]> {
     return this.http.get<City[]>(this.hostUrl).pipe(
