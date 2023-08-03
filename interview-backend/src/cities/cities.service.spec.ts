@@ -13,26 +13,26 @@ describe('CitiesService', () => {
     citiesService = module.get<CitiesService>(CitiesService);
   });
 
-  it('should be defined', () => {
+  it('be defined', () => {
     expect(citiesService).toBeDefined();
   });
 
   describe('getCities', () => {
-    it('should return all cities', async () => {
+    it('returns all cities', async () => {
       const cities = await citiesService.getCities();
-      expect(cities).toBe(CitiesJson);
+      expect(cities).toEqual(CitiesJson);
     });
   });
 
   describe('getCitiesByName', () => {
-    it('should return cityName="Berlin" with "berlin" as name parameter', async () => {
+    it('returns cityName="Berlin" with "berlin" as name parameter', async () => {
       const response = await citiesService.getCitiesByName('berlin');
       expect(response[0].cityName).toBe('Berlin');
     });
   });
 
   describe('getCitiesByUuid', () => {
-    it('should return cityName="Stuttgard" with its uuid as uuid parameter', async () => {
+    it('returns cityName="Stuttgard" with its uuid as uuid parameter', async () => {
       const response = await citiesService.getCitiesByUUID(
         '66b8009b-319d-4272-92ea-853a10c27c9a',
       );
@@ -41,7 +41,7 @@ describe('CitiesService', () => {
   });
 
   describe('getCitiesByCount', () => {
-    it('should return cityName="Essen" with 990 as count parameter', async () => {
+    it('returns cityName="Essen" with 990 as count parameter', async () => {
       const response = await citiesService.getCitiesByCount('990');
       expect(response[0].cityName).toBe('Essen');
     });
