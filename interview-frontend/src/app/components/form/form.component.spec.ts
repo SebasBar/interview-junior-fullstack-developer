@@ -22,6 +22,7 @@ describe('FormComponent', () => {
 
     fixture = TestBed.createComponent(FormComponent);
     formComponent = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -30,7 +31,7 @@ describe('FormComponent', () => {
 
   describe('onSubmit', () => {
     describe('searchValueControl = ""', () => {
-      it('get allCitiesMock with searchValueTypeControl = "byName"', () => {
+      it('get warning allCitiesMock with searchValueTypeControl = "byName"', () => {
         formComponent.onSubmit();
         expect(
           formComponent.citiesForm.get('searchValueTypeControl')?.value
@@ -58,6 +59,16 @@ describe('FormComponent', () => {
           formComponent.citiesForm.get('searchValueTypeControl')?.value
         ).toBe('byCount');
         expect(formComponent.citiesResponse).toEqual(allCitiesMock);
+      });
+
+      it('get warning message', () => {
+        formComponent.onSubmit();
+        expect(
+          formComponent.citiesForm.get('searchValueTypeControl')?.value
+        ).toBe('byName');
+        expect(formComponent.warningMessage).toEqual(
+          'WARNING: We are displaying all city results, you need to enter text to search'
+        );
       });
     });
 

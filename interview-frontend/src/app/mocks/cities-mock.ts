@@ -55,6 +55,7 @@ export class MockApiCallService {
       return new Observable((observer: Observer<City[]>) => {
         observer.next([berlinMock]);
       });
-    } else throw new ErrorEvent('City not Found');
+    }
+    return;
   }
 }
