@@ -46,7 +46,7 @@ export class MockApiCallService {
       observer.next(allCitiesMock);
     });
   }
-  getCityBy(url: string) {
+  getCitiesBy(url: string) {
     if (
       url === `byName/${berlinMock.cityName}` ||
       `byUuid/${berlinMock.uuid}` ||
@@ -55,7 +55,6 @@ export class MockApiCallService {
       return new Observable((observer: Observer<City[]>) => {
         observer.next([berlinMock]);
       });
-    }
-    return;
+    } else throw new ErrorEvent('City not Found');
   }
 }
