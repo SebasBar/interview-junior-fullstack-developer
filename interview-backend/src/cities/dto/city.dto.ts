@@ -1,5 +1,5 @@
 export class CityDto {
-  uuid: string;
   cityName: string;
+  uuid: string;
   count: number;
 }

@@ -1,5 +1,14 @@
-import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { CitiesService } from './cities.service';
+import { CreateCityDto } from './dto/create-city.dto';
+import { City } from './schemas/city.schema';
 
 @Controller('cities')
 export class CitiesController {
@@ -35,5 +44,20 @@ export class CitiesController {
     } catch (err) {
       throw new NotFoundException(err.message);
     }
+  }
+
+  // MongoDB connection
+  @Get('/mongoDb')
+  async getAllMongoCities(): Promise<City[]> {
+    return this.citiesService.getAllMongoCities();
+  }
+
+  @Post('/mongoDb')
+  async createCityMongo(@Body() createCityDto: CreateCityDto) {
+    return this.citiesService.createCityMongo(createCityDto);
+  }
+  @Post('/mongoDb/byCityArray')
+  async createCityArrayMongo(@Body() createCityDtoArray: CreateCityDto[]) {
+    return this.citiesService.createCityArrayMongo(createCityDtoArray);
   }
 }

@@ -1,9 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import * as Cities from '../assests/cities.json';
 import { CityDto } from './dto/city.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { City } from './schemas/city.schema';
+import { Model } from 'mongoose';
+import { CreateCityDto } from './dto/create-city.dto';
+import { create } from 'domain';
 
 @Injectable()
 export class CitiesService {
+  constructor(@InjectModel('City') private cityModel: Model<City>) {}
+
   private cities: CityDto[] = Cities;
 
   getCities() {
@@ -39,5 +46,42 @@ export class CitiesService {
     }
 
     return filteredCities;
+  }
+
+  //MongoDBServices
+  async getAllMongoCities(): Promise<City[]> {
+    return this.cityModel.find().exec();
+  }
+  async createCityMongo(createCityDto: CreateCityDto): Promise<City> {
+    const cityCreated = await this.cityModel.findOne({
+      cityName: createCityDto.cityName,
+    });
+    if (!!cityCreated?.cityName) {
+      return cityCreated;
+    } else {
+      const newCity = new this.cityModel(createCityDto);
+      return newCity.save();
+    }
+  }
+
+  async createCityArrayMongo(
+    createCityArrayDto: CreateCityDto[],
+  ): Promise<City[]> {
+    let arrayResponse = [];
+
+    for await (const city of createCityArrayDto) {
+      const cityCreated = await this.cityModel.findOne({
+        cityName: city.cityName,
+      });
+
+      if (!!cityCreated?.cityName) {
+        arrayResponse.push(cityCreated);
+      } else {
+        const newCity = new this.cityModel(city);
+        arrayResponse.push(newCity.save());
+      }
+    }
+
+    return arrayResponse;
   }
 }
