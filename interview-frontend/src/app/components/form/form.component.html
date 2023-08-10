@@ -44,6 +44,16 @@
                     required>
                 <label for='count'>Count</label>
             </div>
+
+            <div class="radial-label">
+                <input type="radio"
+                    id='mongoDb'
+                    formControlName='searchValueTypeControl'
+                    value='mongo Db'
+                    (change)="onChangeSearchType($event)"
+                    required>
+                <label for='mongoDb'>MongoDB</label>
+            </div>
         </div>
     </div>
     <div *ngIf="isLoading"

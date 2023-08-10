@@ -25,6 +25,20 @@ export class ApiCallService {
     );
   }
 
+  getMongoCities(): Observable<City[]> {
+    return this.http.get<City[]>(`${this.hostUrl}/mongoDb`).pipe(
+      tap((cities) => JSON.stringify(cities)),
+      catchError(this.handleError)
+    );
+  }
+
+  getMongoCitiesBy(url: string): Observable<City[]> {
+    return this.http.get<City[]>(`${this.hostUrl}/mongoDb${url}`).pipe(
+      tap((cities) => JSON.stringify(cities)),
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(error: ErrorEvent) {
     return throwError(() => error.error.message);
   }
