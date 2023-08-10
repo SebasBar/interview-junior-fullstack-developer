@@ -60,4 +60,31 @@ export class CitiesController {
   async createCityArrayMongo(@Body() createCityDtoArray: CreateCityDto[]) {
     return this.citiesService.createCityArrayMongo(createCityDtoArray);
   }
+
+  @Get('/mongoDb/byName/:name')
+  getMongoDbCitiesByName(@Param('name') name: string) {
+    try {
+      return this.citiesService.getMongoDbCitiesByName(name);
+    } catch (err) {
+      throw new NotFoundException(err.message);
+    }
+  }
+
+  @Get('/mongoDb/byUuid/:uuid')
+  getMongoDbCitiesByUUID(@Param('uuid') uuid: string) {
+    try {
+      return this.citiesService.getMongoDbCitiesByUUID(uuid);
+    } catch (err) {
+      throw new NotFoundException(err.message);
+    }
+  }
+
+  @Get('/mongoDb/byCount/:count')
+  getMongoDbCitiesByCount(@Param('count') count: string) {
+    try {
+      return this.citiesService.getMongoDbCitiesByCount(count);
+    } catch (err) {
+      throw new NotFoundException(err.message);
+    }
+  }
 }

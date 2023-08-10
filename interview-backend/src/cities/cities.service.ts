@@ -6,6 +6,7 @@ import { City } from './schemas/city.schema';
 import { Model } from 'mongoose';
 import { CreateCityDto } from './dto/create-city.dto';
 import { create } from 'domain';
+import { threadId } from 'worker_threads';
 
 @Injectable()
 export class CitiesService {
@@ -49,9 +50,6 @@ export class CitiesService {
   }
 
   //MongoDBServices
-  async getAllMongoCities(): Promise<City[]> {
-    return this.cityModel.find().exec();
-  }
   async createCityMongo(createCityDto: CreateCityDto): Promise<City> {
     const cityCreated = await this.cityModel.findOne({
       cityName: createCityDto.cityName,
@@ -83,5 +81,31 @@ export class CitiesService {
     }
 
     return arrayResponse;
+  }
+  async getAllMongoCities(): Promise<City[]> {
+    return this.cityModel.find().exec();
+  }
+  async getMongoDbCitiesByName(cityName: string): Promise<City[]> {
+    const filteredCities = await this.cityModel.find({ cityName });
+    if (filteredCities.length === 0) {
+      throw new Error('City name not found');
+    }
+    return filteredCities;
+  }
+
+  async getMongoDbCitiesByUUID(uuid: string) {
+    const filteredCities = await this.cityModel.find({ uuid });
+    if (filteredCities.length === 0) {
+      throw new Error('City uuid not found');
+    }
+    return filteredCities;
+  }
+
+  async getMongoDbCitiesByCount(count: string) {
+    const filteredCities = await this.cityModel.find({ count });
+    if (filteredCities.length === 0) {
+      throw new Error('City name not found');
+    }
+    return filteredCities;
   }
 }
