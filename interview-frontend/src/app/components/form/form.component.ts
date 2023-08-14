@@ -16,6 +16,7 @@ export class FormComponent implements OnDestroy {
   citiesForm = new FormGroup({
     searchValueControl: new FormControl('', Validators.required),
     searchValueTypeControl: new FormControl('byName'),
+    searchDbType: new FormControl('json'),
   });
   citiesResponse: City[] = emptyCity;
   searchPlaceholder = 'Type to search for a German city by "Name"';
@@ -31,8 +32,20 @@ export class FormComponent implements OnDestroy {
     const searchValueType = this.citiesForm.get(
       'searchValueTypeControl'
     )?.value;
-    const url = `${searchValueType}/${searchValue}`;
+    const searchDbType = this.citiesForm.get('searchDbType')?.value;
 
+    if (searchDbType === 'json') {
+      this.handleJsonRequest(searchValueType, searchValue);
+    } else {
+      this.handleMongoDbRequest(searchValueType, searchValue);
+    }
+  }
+
+  handleJsonRequest(
+    searchValueType: string | undefined | null,
+    searchValue: string | undefined | null
+  ) {
+    const url = `${searchValueType}/${searchValue}`;
     if (!searchValue) {
       this.subscriptions.push(
         this.apiCallService.getCities().subscribe({
@@ -59,6 +72,45 @@ export class FormComponent implements OnDestroy {
         })
       );
     }
+  }
+
+  handleMongoDbRequest(
+    searchValueType: string | undefined | null,
+    searchValue: string | undefined | null
+  ) {
+    const url = `${searchValueType}/${searchValue}`;
+    if (!searchValue) {
+      this.subscriptions.push(
+        this.apiCallService.getMongoCities().subscribe({
+          next: (cities) => {
+            this.warningMessage =
+              'WARNING: We are displaying all city results, you need to enter text to search';
+            this.responseHandle(cities);
+          },
+          error: (errMsg) => {
+            this.errorHandle(errMsg);
+          },
+        })
+      );
+    } else {
+      this.subscriptions.push(
+        this.apiCallService.getMongoCitiesBy(url).subscribe({
+          next: (cities) => {
+            this.responseHandle(cities);
+            this.warningMessage = '';
+          },
+          error: (errMsg) => {
+            this.errorHandle(errMsg);
+          },
+        })
+      );
+    }
+  }
+
+  onChangeSearchDbType(event: Event) {
+    this.citiesForm.patchValue({
+      searchDbType: (event.target as HTMLInputElement).value,
+    });
   }
 
   onChangeSearchType(event: Event) {

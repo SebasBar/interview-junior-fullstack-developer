@@ -3,6 +3,28 @@
     (ngSubmit)="onSubmit()">
     <div class='title'>Search for German Cities by name, uuid or count:</div>
 
+    <div class="radial-button-container">
+        <div class="radial-label">
+            <input type="radio"
+                id='json'
+                formControlName='searchDbType'
+                value='json'
+                (change)="onChangeSearchDbType($event)"
+                required>
+            <label for='json'>JSON file</label>
+        </div>
+
+        <div class="radial-label">
+            <input type="radio"
+                id='mongoDb'
+                formControlName='searchDbType'
+                value='mongoDb'
+                (change)="onChangeSearchDbType($event)"
+                required>
+            <label for='mongoDb'>MongoDB</label>
+        </div>
+    </div>
+
     <div class="search-container">
         <div class="search-input-container">
             <input class='search-input'
@@ -43,16 +65,6 @@
                     (change)="onChangeSearchType($event)"
                     required>
                 <label for='count'>Count</label>
-            </div>
-
-            <div class="radial-label">
-                <input type="radio"
-                    id='mongoDb'
-                    formControlName='searchValueTypeControl'
-                    value='mongo Db'
-                    (change)="onChangeSearchType($event)"
-                    required>
-                <label for='mongoDb'>MongoDB</label>
             </div>
         </div>
     </div>
