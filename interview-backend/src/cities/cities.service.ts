@@ -5,8 +5,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { City } from './schemas/city.schema';
 import { Model } from 'mongoose';
 import { CreateCityDto } from './dto/create-city.dto';
-import { create } from 'domain';
-import { threadId } from 'worker_threads';
 
 @Injectable()
 export class CitiesService {
